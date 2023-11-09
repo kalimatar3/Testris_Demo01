@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 [Serializable]
 public enum Tetromino {
-    I_I // 3D block name... more
+    I_I,L_I // 3D block name... more
 }
 [Serializable]
 public class TetrominoData  {

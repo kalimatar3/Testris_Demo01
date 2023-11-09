@@ -2,6 +2,7 @@ using UnityEngine;
 public class SpawnTetromino : MyBehaviour
 {
     public TetrominoManager TetrominoManager;
+    public bool canSpawn;
     protected override void LoadComponents() {
         base.LoadComponents();
         this.LoadTetrominoManager();
@@ -14,11 +15,12 @@ public class SpawnTetromino : MyBehaviour
         if(TetrominoManager == null) Debug.Log(this.transform.name + "Cant found TetrominoManager"); 
     }
     protected bool CanSapwn() {
+        if(!this.canSpawn) return false;
         if(!TetrominoManager.TetrominoController.getLanded()) return false;
         return true;
     }
     protected void spawnTetromino() {
         if(!CanSapwn()) return;
-        TetrominoManager.TetrominoController.Iniatialize(new Vector3(BoardManager.Instance.transform.position.x,BoardManager.Instance.transform.position.y + BoardManager.VerticalSize/2 - 4,BoardManager.Instance.transform.position.z));
+        TetrominoManager.TetrominoController.Iniatialize(new Vector3(5,21,5));
     }
 }

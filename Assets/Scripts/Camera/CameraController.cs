@@ -7,9 +7,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] protected bool CanMove = true;
     protected void Moveto(Vector3 position) {
         if(!CanMoveto(position)) return;
+        this.CanMove =false;
         BoardManager.Instance.boardMode = (BoardManager.BoardMode)(((int)BoardManager.Instance.boardMode + 1) % 2);
-        this.StartCoroutine(this.BlockMove(Smooth));
-        this.transform.parent.DOMove(position,Smooth);
+        this.transform.parent.DOMove(position,Smooth).OnComplete(()=> {
+            this.CanMove = true;
+        });
     }
     protected IEnumerator BlockMove(float Time) {
         this.CanMove = false;
@@ -20,8 +22,7 @@ public class CameraController : MonoBehaviour
         return CanMove;
     }
     protected void Facingto(Vector3 position) {
-        Quaternion quaternion = Quaternion.LookRotation(position - this.transform.parent.position);
-        this.transform.parent.DORotate(quaternion.eulerAngles,Smooth);
+        this.transform.parent.forward = (position - this.transform.parent.position).normalized;
     }
     protected void Update() {
         this.Facingto(new Vector3(BoardManager.Instance.transform.position.x,this.transform.parent.position.y,BoardManager.Instance.transform.position.z));
