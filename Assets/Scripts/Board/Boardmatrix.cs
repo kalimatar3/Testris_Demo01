@@ -45,7 +45,12 @@ public class Boardmatrix : MyBehaviour
         if(!IsRowFull(row)) return;
         for(int i = 0; i < Matrix.GetLength(0); i++) {
             for(int j = 0; j < Matrix.GetLength(2); j++) {
-                if(Matrix[i,row,j] !=null && Matrix[i,row,j].gameObject.activeInHierarchy) BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,j]);
+                if(Matrix[i,row,j] !=null && Matrix[i,row,j].gameObject.activeInHierarchy)
+                {
+                    EffectSpawner.Instance.Spawn("Star",Matrix[i,row,j].position,Quaternion.identity);
+                    BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,j]);
+                    //GameMode.Instance.IcrPoint();
+                } 
             }
         }
         Debug.Log("row : " + row + " is cleared");
@@ -61,6 +66,19 @@ public class Boardmatrix : MyBehaviour
             }
         }
         this.Matrix = newMatrix;
+    }
+    public void ClearAllRow() {
+        foreach(Transform element in TetrominoManager.Instance.TetrominoController.Cells) {
+           BlockSpawner.Instance.DeSpawnToPool(element);
+        }
+        for(int i = 0; i < Matrix.GetLength(0); i++) {
+            for(int j = 0; j < Matrix.GetLength(1); j++) {
+                for(int h = 0 ; h < Matrix.GetLength(2);h++) {
+                if(Matrix[i,j,h] !=null && Matrix[i,j,h].gameObject.activeInHierarchy) BlockSpawner.Instance.DeSpawnToPool(Matrix[i,j,h]);
+                }
+            }
+        }
+        this.Matrix = new Transform[ Matrix.GetLength(0), Matrix.GetLength(1), Matrix.GetLength(2)];;
     }
     public void AddtoMatrix(Transform transform) {
         if(!IsValidPosinMatrix(transform.position)) return;

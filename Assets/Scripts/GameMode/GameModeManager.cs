@@ -9,16 +9,16 @@ public class GameModeManager : MyBehaviour
     [SerializeField] protected List<Transform> ListgameMode;
     protected override void LoadComponents() {
         base.LoadComponents();
-        this.LoadgameMode();
+        this.LoadListGameMode();
         this.LoadgameModeComtroller();
     }
     protected void LoadgameModeComtroller() {
         this.gameModeController = GetComponent<GameModeController>();
     }
-    protected void LoadgameMode() {
-        if(ListgameMode.Count >0) return;
+    protected void LoadListGameMode() {
+        if(ListgameMode.Count > 0 ) return;
         foreach(Transform element in this.transform) {
-            IGameMode thisgameMode = element.GetComponent<IGameMode>();
+            GameMode thisgameMode = element.GetComponent<GameMode>();
             if(element.gameObject.activeInHierarchy && thisgameMode != null) {
                 this.ListgameMode.Add(element);
             }

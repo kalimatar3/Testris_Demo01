@@ -22,7 +22,7 @@ public class PanelManager : MyBehaviour
         this.panelController = GetComponent<PanelController>();
     }
     protected void LoadListPanel() {
-        if(ListPanel.Count >0) return;
+        if(ListPanel.Count > 0) return;
         foreach(Transform element in this.transform) {
             ListPanel.Add(element);
         }

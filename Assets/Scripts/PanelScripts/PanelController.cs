@@ -11,7 +11,10 @@ public class PanelController : MyBehaviour
         if(panelManager == null) Debug.LogWarning("Cant found PanelManager");
     }
     public void SetActivePanel(String Panelname) {
-        if(!IsPanelValid(Panelname)) return;
+        if(!IsPanelValid(Panelname)) {
+            Debug.LogWarning("Cant found panel : " + Panelname);
+            return;
+        }
         foreach(Transform element in panelManager.GetListPanel()) {
             if(element.name == Panelname) {
                 element.gameObject.SetActive(true);

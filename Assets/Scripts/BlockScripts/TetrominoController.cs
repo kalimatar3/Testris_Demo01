@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Security.Cryptography.X509Certificates;
-using UnityEditor;
 using UnityEngine;
 public class TetrominoController : MyBehaviour
 {
@@ -37,7 +34,7 @@ public class TetrominoController : MyBehaviour
             ListTettrominoData.Add(new TetrominoData(element));
         }
     }
-    protected void Update() {
+    public void Main() {
         if(this.ThisTetromino == null) return;
         if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY) {
             if(Input.GetKeyDown(KeyCode.Space)) this.RotateZ(1);
@@ -73,7 +70,7 @@ public class TetrominoController : MyBehaviour
                     y = Mathf.RoundToInt((cell.x * -1f * Mathf.Sin(Mathf.PI / 2f) * direction) + (cell.y * Mathf.Cos(Mathf.PI / 2f) * direction));
                     break;
             }
-            if(Tetromino_Pos.y + y < 0) return;
+            if(Tetromino_Pos.y + y <= 0) return;
             if(!OnBoardPosition(new Vector3Int(x,y,CellsPosition[i].z)+ Tetromino_Pos) ) {
                 if(Tetromino_Pos.x + x < 0 && Tetromino_Pos.x + x - 0 < maxX )  maxX = x;
                 else if(Tetromino_Pos.x + x > 9 && Tetromino_Pos.x + x - 9 > maxX)  maxX = x;
@@ -101,7 +98,7 @@ public class TetrominoController : MyBehaviour
                     y = Mathf.RoundToInt((cell.z * -1f * Mathf.Sin(Mathf.PI / 2f) * direction) + (cell.y * Mathf.Cos(Mathf.PI / 2f) * direction));
                     break;
             }
-            if(Tetromino_Pos.y + y < 0) return;
+            if(Tetromino_Pos.y + y <= 0) return;
             if(!OnBoardPosition(new Vector3Int(CellsPosition[i].x,y,z) + Tetromino_Pos)) {
                 if(Tetromino_Pos.z + z < 0 && Tetromino_Pos.z + z - 0 < maxZ )  maxZ = z;
                 else if(Tetromino_Pos.z + z > 9 && Tetromino_Pos.z + z - 9 > maxZ)  maxZ = z;
@@ -148,8 +145,8 @@ public class TetrominoController : MyBehaviour
                 this.setLanded(true);
                 this.Landing();
                 return;
-                }
-                else return;
+            }
+            else return;
             }
         }
         this.Tetromino_Pos += translation;
