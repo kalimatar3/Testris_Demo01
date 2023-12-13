@@ -43,13 +43,13 @@ public class Boardmatrix : MyBehaviour
     }
     public void ClearRow(int row) {
         if(!IsRowFull(row)) return;
+        SoundSpawner.Instance.Spawn("holdpower_cut",this.transform.position,Quaternion.identity);        
         for(int i = 0; i < Matrix.GetLength(0); i++) {
             for(int j = 0; j < Matrix.GetLength(2); j++) {
                 if(Matrix[i,row,j] !=null && Matrix[i,row,j].gameObject.activeInHierarchy)
                 {
                     EffectSpawner.Instance.Spawn("Star",Matrix[i,row,j].position,Quaternion.identity);
                     BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,j]);
-                    //GameMode.Instance.IcrPoint();
                 } 
             }
         }

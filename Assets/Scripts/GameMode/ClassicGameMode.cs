@@ -56,6 +56,7 @@ public class ClassicGameMode : GameMode
     public override void Lose()
     {
         Debug.Log("LOSE");
+        InputManager.Instance.touchcontrols.Disable();
         PanelManager.Instance.PanelController.SetActivePanel("LosePanel");
     }
 
@@ -67,6 +68,7 @@ public class ClassicGameMode : GameMode
     {
         canWin = false;
         Debug.Log("WIN");
+        InputManager.Instance.touchcontrols.Disable();
         PanelManager.Instance.PanelController.SetActivePanel("ClassicMode:WinPanel");
     }
 }

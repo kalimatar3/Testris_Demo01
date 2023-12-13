@@ -54,6 +54,7 @@ public class EndLessGameMode : GameMode
     public override void Lose()
     {
         Debug.Log("LOSE");
+        InputManager.Instance.touchcontrols.Disable();
         PanelManager.Instance.PanelController.SetActivePanel("LosePanel");
     }
 
@@ -66,6 +67,7 @@ public class EndLessGameMode : GameMode
 
     public override void Win()
     {
+        InputManager.Instance.touchcontrols.Disable();
         Debug.Log("WIN");
     }
 }

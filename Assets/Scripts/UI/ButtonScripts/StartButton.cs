@@ -8,6 +8,7 @@ public class StartButton : BaseButton
     [SerializeField] protected Transform GameModebutton;
     protected override void Act()
     {
+        base.Act();
         if(DefaultButton == null) return;
         if(GameModebutton == null) return;
         // animation...;

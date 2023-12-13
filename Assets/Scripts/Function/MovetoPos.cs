@@ -11,8 +11,9 @@ public class MovetoPos : MyBehaviour
     protected void OnEnable() {
     Vector3 Curpos = this.transform.position;
     this.transform.DOMove(RandomPosAround(Curpos),0.2f).OnComplete(()=> {        
-        this.transform.DOMove(this.Obj.position + new Vector3(1,0,1) * Random.Range(-10,10)/10f,TimetoMove + Random.Range(0,20)/10f).OnComplete(()=> {
+        this.transform.DOMove(this.Obj.position + new Vector3(1,0,1) * Random.Range(-10,10)/10f,TimetoMove + Random.Range(0,51)/10f).OnComplete(()=> {
             GameMode.Instance.IcrPoint();
+            SoundSpawner.Instance.Spawn("pup",this.transform.position,Quaternion.identity);           
             spawner.DeSpawnToPool(this.transform);
             });
         });

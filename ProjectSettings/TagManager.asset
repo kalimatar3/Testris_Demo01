@@ -3,17 +3,20 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - FX
+  - Environment
+  - Effects
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - LazerCanHIt
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Enemy
+  - PhysicEnvironment
+  - Player
   - 
   - 
   - 

@@ -30,12 +30,6 @@ public abstract class GameMode : MyBehaviour
     public abstract bool CanStart();
     public abstract void Init();
     public abstract void Playing();
-    protected override void Start() {
-        base.Start();
-    }
-    protected void OnEnable() {
-        //StartCoroutine(this.Play());       
-    }
     public IEnumerator Play() {
         yield return new WaitUntil(predicate:() => {
             return this.CanStart();

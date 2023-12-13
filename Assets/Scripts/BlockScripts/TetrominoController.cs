@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 public class TetrominoController : MyBehaviour
 {
@@ -20,12 +21,19 @@ public class TetrominoController : MyBehaviour
     public void setSpeed(float Speed) {
         this.Speed = Speed;
     }
-    public float getSpeed() {
-        return this.Speed;
-    }
     protected override void LoadComponents() {
         base.LoadComponents();
         this.LoadListTettrominoData();
+    }
+    protected void OnEnable() {
+        InputManager.Instance.OnEndRight += MoveRight;
+        InputManager.Instance.OnEndLeft += MoveLeft;
+        InputManager.Instance.OnEndUnder += Rotate;
+    }
+    protected void OnDisable() {
+        InputManager.Instance.OnEndRight -= MoveRight;
+        InputManager.Instance.OnEndLeft -= MoveLeft;
+        InputManager.Instance.OnEndUnder -= Rotate;
     }
     protected void LoadListTettrominoData() {
         if(ListTettrominoData.Count > 0) return;
@@ -34,18 +42,31 @@ public class TetrominoController : MyBehaviour
             ListTettrominoData.Add(new TetrominoData(element));
         }
     }
+    protected void MoveRight(Vector2 position,float time) 
+    {
+        SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
+        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY) {
+            this.Move(Vector3.right);
+        }
+        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY) {
+            this.Move(Vector3.back);
+        }
+    }
+    protected void MoveLeft(Vector2 position,float time) 
+    {
+        SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
+        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY)    this.Move(Vector3.left);
+        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY)   this.Move(Vector3.forward);
+    }
+    protected void Rotate(Vector2 position,float time)  
+    {
+        SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
+        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY)    this.RotateZ(1);
+        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY)    this.RotateX(1);
+    }
     public void Main() {
         if(this.ThisTetromino == null) return;
-        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY) {
-            if(Input.GetKeyDown(KeyCode.Space)) this.RotateZ(1);
-            if(Input.GetKeyDown(KeyCode.A)) this.Move(Vector3.left);
-            else if(Input.GetKeyDown(KeyCode.D)) this.Move(Vector3.right);
-        }
-        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY) {
-            if(Input.GetKeyDown(KeyCode.Space)) this.RotateX(1);
-            if(Input.GetKeyDown(KeyCode.A)) this.Move(Vector3.forward);
-            else if(Input.GetKeyDown(KeyCode.D)) this.Move(Vector3.back);
-        }
+        InputManager.Instance.touchcontrols.Enable();
         Timer += Time.deltaTime * 1f * Speed;
         if(Timer >= 1f) {
             Timer = 0;
@@ -110,6 +131,7 @@ public class TetrominoController : MyBehaviour
     }
     // do after landed = true 
     protected void Landing() {
+        SoundSpawner.Instance.Spawn("twuut",this.transform.position,Quaternion.identity);
         for(int i = 0; i < Cells.Length; i++) {
             BoardManager.Instance.Board.AddtoMatrix(Cells[i]);
             Debug.Log(Cells[i].name + "add to Matrix" + " " + Cells[i].position.x + " " + Cells[i].position.y + " " + Cells[i].position.z);

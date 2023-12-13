@@ -19,5 +19,7 @@ public abstract class BaseButton : MyBehaviour
         if(thisbutton == null) return;
         thisbutton.onClick.AddListener(delegate () {this.Act();});
     }
-    protected abstract void Act();
+    protected virtual void Act() {
+        SoundSpawner.Instance.Spawn("tach",this.transform.position,Quaternion.identity);        
+    }
 }
