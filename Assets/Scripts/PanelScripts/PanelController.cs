@@ -10,6 +10,14 @@ public class PanelController : MyBehaviour
         this.panelManager = GetComponent<PanelManager>();
         if(panelManager == null) Debug.LogWarning("Cant found PanelManager");
     }
+    public Transform getpanel(string Panelname) {
+        foreach(Transform element in panelManager.GetListPanel()) {
+            if(element.name == Panelname) {
+                return element;
+            }
+        }
+        return null;
+    }
     public void SetActivePanel(String Panelname) {
         if(!IsPanelValid(Panelname)) {
             Debug.LogWarning("Cant found panel : " + Panelname);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEditor;
 using UnityEngine;
 public class TetrominoController : MyBehaviour
@@ -134,16 +135,16 @@ public class TetrominoController : MyBehaviour
         SoundSpawner.Instance.Spawn("twuut",this.transform.position,Quaternion.identity);
         for(int i = 0; i < Cells.Length; i++) {
             BoardManager.Instance.Board.AddtoMatrix(Cells[i]);
-            Debug.Log(Cells[i].name + "add to Matrix" + " " + Cells[i].position.x + " " + Cells[i].position.y + " " + Cells[i].position.z);
+            Debug.Log(Cells[i].name + "add to Matrix" + " " + Cells[i].localPosition.x + " " + Cells[i].localPosition.y + " " + Cells[i].localPosition.z);
         }
         for(int i = 0; i < Cells.Length; i++) {
-            BoardManager.Instance.Board.ClearRow((int)Cells[i].position.y);
+            BoardManager.Instance.Board.ClearRow((int)Cells[i].localPosition.y);
         }
     }
     protected bool OnBoardPosition(Vector3 position) {
-        if(position.x < -BoardManager.HorizontalSize/2 + BoardManager.Instance.transform.position.x || position.x > BoardManager.HorizontalSize/2 + BoardManager.Instance.transform.position.x) return false;
-        if(position.y < -BoardManager.VerticalSize/2 + BoardManager.Instance.transform.position.y) return false;
-        if(position.z < -BoardManager.HorizontalSize/2 + BoardManager.Instance.transform.position.z || position.z > BoardManager.HorizontalSize/2 + BoardManager.Instance.transform.position.z) return false;
+        if(position.x < 0 || position.x > 10) return false;
+        if(position.y < 0) return false;
+        if(position.z < 0 || position.z > 10) return false;
         return true;
     }
     protected bool IsValidPos(Vector3 position) {
@@ -157,33 +158,39 @@ public class TetrominoController : MyBehaviour
     }
     protected void MovingCell() {
         for(int i = 0 ; i < Cells.Length; i++) {
-            Cells[i].position = CellsPosition[i] + Tetromino_Pos;
+            Cells[i].localPosition = CellsPosition[i] + Tetromino_Pos;
         }
     }
     protected void Move(Vector3 translation) {
         foreach(Transform element in Cells) {
-           if(!CanMoveto(element.position + translation)) {
-                if(translation == Vector3.down) {           
-                this.setLanded(true);
-                this.Landing();
-                return;
-            }
-            else return;
-            }
+            if(!CanMoveto(element.localPosition + translation)) {
+                    if(translation == Vector3.down) {           
+                    this.setLanded(true);
+                    this.Landing();
+                    return;
+                }
+                else return;
+                }
         }
-        this.Tetromino_Pos += translation;
+        this.Tetromino_Pos += translation ;
         this.MovingCell();
     }
-    public void Iniatialize(Vector3 position) {
+    public void Iniatialize(Transform transform) {
         String BlockTile = BlockSpawner.Instance.prefabs[UnityEngine.Random.Range(0,BlockSpawner.Instance.prefabs.Count )].transform.name;
-        Tetromino_Pos = position;
+        Tetromino_Pos = transform.localPosition;
+        Vector3 SpawnPoint = transform.position;
         ThisTetromino = ListTettrominoData[UnityEngine.Random.Range(0,ListTettrominoData.Count)];
         CellsPosition = new Vector3Int[ThisTetromino.Cells.Length];
         Cells = new Transform[CellsPosition.Length];
         for(int i = 0 ; i < this.ThisTetromino.Cells.Length ; i++) {
             this.CellsPosition[i] = ThisTetromino.Cells[i];
-            this.Cells[i] =  BlockSpawner.Instance.Spawn(BlockTile,this.CellsPosition[i] + Tetromino_Pos ,Quaternion.identity);
+            this.Cells[i] =  BlockSpawner.Instance.Spawn(BlockTile,this.CellsPosition[i] + SpawnPoint ,Quaternion.identity);
+            if(OnlineGameMode.Instance != null) {
+                GameObject gameObject = PhotonNetwork.Instantiate(Cells[i].name,this.CellsPosition[i] + SpawnPoint,Quaternion.identity);
+                gameObject.SetActive(false); 
+            }
         }
+
         this.setLanded(false);
     }
 }

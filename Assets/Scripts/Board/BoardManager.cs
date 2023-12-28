@@ -15,10 +15,12 @@ public class BoardManager : MyBehaviour
     [SerializeField] protected Boardmatrix board {get; private set;}
     public Boardmatrix Board => board;
     public BoardMode boardMode;
+    public Transform SpawnPoint;
+    public Transform CamPoint;
     protected override void Awake()
     {
         base.Awake();
-        if(instance != this && instance != null) Destroy(this);
+        if(instance != this && instance != null && instance.gameObject.activeInHierarchy) Destroy(this);
         else instance = this;
     }
     protected override void LoadComponents() {

@@ -34,12 +34,13 @@ public class ClassicGameMode : GameMode
         this.Point = 0;
         this.CurLevel = (int)DataManager.Instance.DynamicData.Level;
         this.PointcanGet = 10 + CurLevel * 2;
+        TetrominoManager.Instance.TetrominoController.setLanded(true);
         TetrominoManager.Instance.TetrominoController.setSpeed( 2 + CurLevel* 0.5f);
     }
     public override void Playing() {
         TetrominoManager.Instance.SpawnTetromino.spawnTetromino();
         TetrominoManager.Instance.TetrominoController.Main();
-        if(Point >= LevelPoint[CurLevel ]) {
+        if(Point >= LevelPoint[CurLevel]) {
             Point = 0;
             canWin = true;
         }

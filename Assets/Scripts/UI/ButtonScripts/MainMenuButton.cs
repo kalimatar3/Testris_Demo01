@@ -1,14 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MainMenuButton : BaseButton
 {
     protected override void Act()
     { 
-        foreach(Transform element in PanelManager.Instance.GetListPanel()) {
-            element.gameObject.SetActive(false);
+        base.Act();
+        PhotonView[] photonViews = PhotonNetwork.PhotonViews;
+        foreach(PhotonView ele in photonViews) {
+            ele.RPC("SetWin",RpcTarget.All);
         }
-        PanelManager.Instance.PanelController.SetActivePanel("MainMenuPanel");
+        if(PhotonNetwork.InRoom) PhotonNetwork.LeaveRoom();
+        if(PhotonNetwork.InLobby) PhotonNetwork.LeaveLobby();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  
+        Lsmanager.Instance.SaveGame();
     }
 }

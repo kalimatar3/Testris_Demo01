@@ -9,7 +9,7 @@ public class CameraManager : MyBehaviour
     protected override void Awake()
     {
         base.Awake();
-        if(instance != this && instance != null) Destroy(this);
+        if(instance != this && instance != null && instance.gameObject.activeInHierarchy) Destroy(instance.gameObject);
         else instance = this;
     }
 }

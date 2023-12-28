@@ -48,6 +48,7 @@ public class EndLessGameMode : GameMode
         this.Point = 0;
         this.PointcanGet = 10;
         this.PlayTime = 0;
+        TetrominoManager.Instance.TetrominoController.setLanded(true);
         TetrominoManager.Instance.TetrominoController.setSpeed(2);
     }
 

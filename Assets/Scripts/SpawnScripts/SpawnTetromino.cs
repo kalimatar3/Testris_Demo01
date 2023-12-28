@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 public class SpawnTetromino : MyBehaviour
 {
@@ -16,6 +17,6 @@ public class SpawnTetromino : MyBehaviour
     }
     public void spawnTetromino() {
         if(!CanSapwn()) return;
-        TetrominoManager.TetrominoController.Iniatialize(new Vector3(5,21,5));
+        TetrominoManager.TetrominoController.Iniatialize(BoardManager.Instance.SpawnPoint);
     }
 }

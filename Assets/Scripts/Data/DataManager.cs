@@ -13,7 +13,11 @@ public class DataManager : MyBehaviour
             Destroy(this);
             Debug.LogWarning(this.gameObject + "Does Existed");
         }
-        else instance = this;
+        else 
+        {
+            DontDestroyOnLoad(this.gameObject);
+            instance = this;
+        }
     }
     public virtual void LoadDataFromJson(string JsonString)
     {

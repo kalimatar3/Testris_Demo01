@@ -5,6 +5,16 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] protected float Smooth;
     [SerializeField] protected bool CanMove = true;
+    protected void Start() {
+        StartCoroutine(MovetoDelay());
+    }
+    protected IEnumerator MovetoDelay() {
+        yield return new WaitUntil(predicate:() => {
+            if(BoardManager.Instance == null) return false;
+            return true;
+        });
+        this.Moveto(new Vector3(0,0,-10) + BoardManager.Instance.CamPoint.position);     
+    }
     protected void Moveto(Vector3 position) {
         if(!CanMoveto(position)) return;
         this.CanMove =false;
@@ -13,12 +23,12 @@ public class CameraController : MonoBehaviour
         });
     }
     protected void OnEnable() {
-        InputManager.Instance.OnSwipeLeft += MovetoYZ;
-        InputManager.Instance.OnSwipeRight += MovetoXY;
+        InputManager.Instance.OnSwipeLeft +=MovetoXY;
+        InputManager.Instance.OnSwipeRight += MovetoYZ;
     }
     protected void OnDisable() {
-        InputManager.Instance.OnSwipeLeft -= MovetoYZ;
-        InputManager.Instance.OnSwipeRight -= MovetoXY;
+        InputManager.Instance.OnSwipeLeft -= MovetoXY;
+        InputManager.Instance.OnSwipeRight -= MovetoYZ;
 
     }
     protected IEnumerator BlockMove(float Time) {
@@ -33,18 +43,19 @@ public class CameraController : MonoBehaviour
         this.transform.parent.forward = (position - this.transform.parent.position).normalized;
     }
     protected void Update() {
-        this.Facingto(new Vector3(BoardManager.Instance.transform.position.x,this.transform.parent.position.y,BoardManager.Instance.transform.position.z));
+        if(BoardManager.Instance != null)
+        this.Facingto(BoardManager.Instance.CamPoint.position);
     }
     protected void MovetoYZ() {
         if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY)      
         SoundSpawner.Instance.Spawn("tweet",this.transform.position,Quaternion.identity);
-        this.Moveto(new Vector3(-10,10,4.5f)); 
+        this.Moveto(new Vector3(-10,0,0) + BoardManager.Instance.CamPoint.position); 
         BoardManager.Instance.boardMode = BoardManager.BoardMode.ZY;
     }
     protected void MovetoXY() {
         if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY)
         SoundSpawner.Instance.Spawn("tweet",this.transform.position,Quaternion.identity);
-        this.Moveto(new Vector3(4.5f,10,-10));
+        this.Moveto(new Vector3(0,0,-10) + BoardManager.Instance.CamPoint.position);
         BoardManager.Instance.boardMode = BoardManager.BoardMode.XY;
     }
 }

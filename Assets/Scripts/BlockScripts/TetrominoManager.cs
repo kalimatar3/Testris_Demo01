@@ -25,7 +25,7 @@ public class TetrominoManager : MyBehaviour
     protected override void Awake()
     {
         base.Awake();
-        if(instance != this && instance != null) Destroy(this);
+        if(instance != this && instance != null && instance.gameObject.activeInHierarchy) Destroy(this);
         else instance = this;
     }
 

@@ -7,6 +7,7 @@ public class NexLevelScript : BaseButton
 {
     protected override void Act()
     {
+        base.Act();
         ClassicGameMode.Instance.CurLevel ++;
         DataManager.Instance.DynamicData.Level = ClassicGameMode.Instance.CurLevel;
         Lsmanager.Instance.SaveGame();

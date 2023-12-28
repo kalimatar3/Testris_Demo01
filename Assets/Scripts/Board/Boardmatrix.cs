@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 public class Boardmatrix : MyBehaviour
 {
@@ -20,7 +19,7 @@ public class Boardmatrix : MyBehaviour
     }
     public Transform[] GetZArray(int x,int y) {
         Transform[] Array = new Transform[Matrix.GetLength(0)];
-        for(int i =0 ; i < Matrix.GetLength(2);i++) {
+        for(int i = 0 ; i < Matrix.GetLength(2);i++) {
             Array[i] = Matrix[x,y,i];
         }
         return Array;
@@ -44,30 +43,33 @@ public class Boardmatrix : MyBehaviour
     public void ClearRow(int row) {
         if(!IsRowFull(row)) return;
         SoundSpawner.Instance.Spawn("holdpower_cut",this.transform.position,Quaternion.identity);        
-        for(int i = 0; i < Matrix.GetLength(0); i++) {
-            for(int j = 0; j < Matrix.GetLength(2); j++) {
-                if(Matrix[i,row,j] !=null && Matrix[i,row,j].gameObject.activeInHierarchy)
-                {
-                    EffectSpawner.Instance.Spawn("Star",Matrix[i,row,j].position,Quaternion.identity);
-                    BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,j]);
-                } 
-            }
-        }
         Debug.Log("row : " + row + " is cleared");
         Transform[,,] newMatrix = new Transform[ Matrix.GetLength(0), Matrix.GetLength(1), Matrix.GetLength(2)];
-        for(int j = row + 1 ; j < Matrix.GetLength(1); j++) {
-            for(int i = 0; i < Matrix.GetLength(0); i++) {
-                for(int k = 0; k < Matrix.GetLength(2); k++) {
-                   if(Matrix[i,j,k] != null) {
-                        Matrix[i,j,k].position = new Vector3((int)Matrix[i,j,k].position.x,(int)Matrix[i,j,k].position.y-1,(int)Matrix[i,j,k].position.z);
-                        newMatrix[i,j-1,k] = Matrix[i,j,k];
-                   }
+        for(int i = 0; i < Matrix.GetLength(0); i++) {
+            for(int k = 0; k < Matrix.GetLength(2); k++) {
+                for(int j = 0 ; j < Matrix.GetLength(1); j++) {
+                    if(j == row) {
+                        if(Matrix[i,row,k] !=null && Matrix[i,row,k].gameObject.activeInHierarchy)
+                        {
+                            EffectSpawner.Instance.Spawn("Star",Matrix[i,row,k].position,Quaternion.identity);
+                            BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,k]);
+                        } 
+                    }
+                    else if(j > row) {
+                        if(Matrix[i,j,k] != null) {
+                                Matrix[i,j,k].localPosition = new Vector3((int)Matrix[i,j,k].localPosition.x,(int)Matrix[i,j,k].localPosition.y-1,(int)Matrix[i,j,k].localPosition.z);
+                                newMatrix[i,j-1,k] = Matrix[i,j,k];
+                        }
+                    }
+                    else if(j < row) {
+                        newMatrix[i,j,k] = Matrix[i,j,k];
+                    }
                 }
             }
         }
         this.Matrix = newMatrix;
     }
-    public void ClearAllRow() {
+    public void ClearAllMatrix() {
         foreach(Transform element in TetrominoManager.Instance.TetrominoController.Cells) {
            BlockSpawner.Instance.DeSpawnToPool(element);
         }
@@ -78,11 +80,11 @@ public class Boardmatrix : MyBehaviour
                 }
             }
         }
-        this.Matrix = new Transform[ Matrix.GetLength(0), Matrix.GetLength(1), Matrix.GetLength(2)];;
+        this.Matrix = new Transform[Matrix.GetLength(0), Matrix.GetLength(1), Matrix.GetLength(2)];
     }
     public void AddtoMatrix(Transform transform) {
-        if(!IsValidPosinMatrix(transform.position)) return;
-        this.Matrix[(int)transform.position.x,(int)transform.position.y,(int)transform.position.z] = transform; 
+        if(!IsValidPosinMatrix(transform.localPosition)) return;
+        this.Matrix[(int)transform.localPosition.x,(int)transform.localPosition.y,(int)transform.localPosition.z] = transform; 
     }
     public bool IsValidPosinMatrix(Vector3 position) {
         if(!OnMatrixsize(position)) return false;

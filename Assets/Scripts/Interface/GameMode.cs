@@ -30,7 +30,7 @@ public abstract class GameMode : MyBehaviour
     public abstract bool CanStart();
     public abstract void Init();
     public abstract void Playing();
-    public IEnumerator Play() {
+    public virtual IEnumerator Play() {
         yield return new WaitUntil(predicate:() => {
             return this.CanStart();
         });
@@ -39,12 +39,12 @@ public abstract class GameMode : MyBehaviour
             this.Playing();
             if(CanLose()) {
                 this.Lose();
-                BoardManager.Instance.Board.ClearAllRow();
+                BoardManager.Instance.Board.ClearAllMatrix();
                 break;
             }
             if(CanWin()) {
                 this.Win();
-                BoardManager.Instance.Board.ClearAllRow();
+                BoardManager.Instance.Board.ClearAllMatrix();
                 break;
             }
             yield return new WaitForSecondsRealtime(0f);

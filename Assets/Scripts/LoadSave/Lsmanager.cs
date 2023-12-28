@@ -8,12 +8,15 @@ public class Lsmanager : MyBehaviour
     protected override void Awake()
     {
         base.Awake();
-        if(instance != null && instance != this)
+        if(instance != null && instance != this && instance.gameObject.activeInHierarchy)
         {
             Destroy(this);
             Debug.LogWarning(this.gameObject + "Does Existed");
         }
-        else instance = this;
+        else  { 
+            DontDestroyOnLoad(this.gameObject);
+            instance = this;
+        }
     }
     protected override void Start()
     {

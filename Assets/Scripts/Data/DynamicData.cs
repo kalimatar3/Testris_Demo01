@@ -4,4 +4,5 @@ public struct DynamicData
 {
     [Header ("ClassicModeData :")]
     public float Level;
+    public float MusicVolume,SoundEffectVolume;
 }

@@ -6,6 +6,7 @@ public class EndLessButton : BaseButton
 {
     protected override void Act()
     {   
+        base.Act();
         GameModeManager.Instance.GameModeController.SetGameMode("Endless");
         PanelManager.Instance.PanelController.DeActivePanel("MainMenuPanel");
     }

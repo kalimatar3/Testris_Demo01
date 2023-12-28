@@ -1,5 +1,3 @@
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 [DefaultExecutionOrder(-1)]
@@ -43,7 +41,9 @@ public class InputManager : MyBehaviour
         base.Awake();
         this.touchcontrols = new TouchControls();
         if(instance != this && instance != null) Destroy(this);
-        else instance = this;
+        else  { 
+            instance = this;
+        }
     }
     protected void OnEnable() {
         OnStartTouch += SwipeStart;
@@ -81,17 +81,17 @@ public class InputManager : MyBehaviour
     private void TouchStart(Vector2 position,float time) {
         startPosition = position;
         startTime = time;
-        if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x < Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 4)
+        if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x < Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 5)
         {
             if(OnStartLeft == null) return;
             this.OnStartLeft(position,time);
         }
-        else if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x >= Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 4 )  
+        else if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x >= Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 5 )  
         {
             if(OnStartRight == null) return;
             this.OnStartRight(position,time);
         }
-        else if(touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y <= Screen.height / 4 )
+        else if(touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y <= Screen.height / 5 )
         {
             if(OnStartUnder == null) return;
             this.OnStartUnder(position,time);
@@ -102,17 +102,17 @@ public class InputManager : MyBehaviour
         endPosition = position;
         endTime = time;
         if(Vector3.Distance(startPosition, endPosition) >= minimumDistance) return;
-        if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x < Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 4)
+        if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x < Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 5)
         {
             if(OnEndLeft == null) return;
             this.OnEndLeft(position,time);
         }
-        else if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x >= Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 4 )  
+        else if (touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().x >= Screen.width / 2 && touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y > Screen.height / 5 )  
         {
             if(OnEndRight == null) return;
             this.OnEndRight(position,time);
         }
-        else if(touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y <= Screen.height / 4 )
+        else if(touchcontrols.Touch.TouchPosition.ReadValue<Vector2>().y <= Screen.height / 5 )
         {
             if(OnEndUnder == null) return;
             this.OnEndUnder(position,time);
