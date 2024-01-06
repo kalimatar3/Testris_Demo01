@@ -142,9 +142,9 @@ public class TetrominoController : MyBehaviour
         }
     }
     protected bool OnBoardPosition(Vector3 position) {
-        if(position.x < 0 || position.x > 10) return false;
+        if(position.x < 0 || position.x > 9) return false;
         if(position.y < 0) return false;
-        if(position.z < 0 || position.z > 10) return false;
+        if(position.z < 0 || position.z > 9) return false;
         return true;
     }
     protected bool IsValidPos(Vector3 position) {

@@ -50,6 +50,11 @@ public class EndLessGameMode : GameMode
         this.PlayTime = 0;
         TetrominoManager.Instance.TetrominoController.setLanded(true);
         TetrominoManager.Instance.TetrominoController.setSpeed(2);
+        if(!DataManager.Instance.DynamicData.Tutorial) {
+        DataManager.Instance.DynamicData.Tutorial = true;
+        StartCoroutine(this.Tutorial());
+        Lsmanager.Instance.SaveGame();
+        }
     }
 
     public override void Lose()
@@ -64,6 +69,38 @@ public class EndLessGameMode : GameMode
         TetrominoManager.Instance.SpawnTetromino.spawnTetromino();
         TetrominoManager.Instance.TetrominoController.Main();
         PlayTime += Time.deltaTime *1f;
+    }
+    public virtual IEnumerator Tutorial() {
+        yield return new WaitForSeconds(1f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel1");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel1");
+
+        yield return new WaitForSeconds(2f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel2");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel2");
+
+        yield return new WaitForSeconds(2f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel3");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel3");
+
     }
 
     public override void Win()

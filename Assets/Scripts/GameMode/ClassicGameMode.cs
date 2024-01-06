@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,6 +37,11 @@ public class ClassicGameMode : GameMode
         this.PointcanGet = 10 + CurLevel * 2;
         TetrominoManager.Instance.TetrominoController.setLanded(true);
         TetrominoManager.Instance.TetrominoController.setSpeed( 2 + CurLevel* 0.5f);
+        if(!DataManager.Instance.DynamicData.Tutorial) {
+        DataManager.Instance.DynamicData.Tutorial = true;
+        StartCoroutine(this.Tutorial());
+        Lsmanager.Instance.SaveGame();
+        }
     }
     public override void Playing() {
         TetrominoManager.Instance.SpawnTetromino.spawnTetromino();
@@ -44,6 +50,38 @@ public class ClassicGameMode : GameMode
             Point = 0;
             canWin = true;
         }
+    }
+    public virtual IEnumerator Tutorial() {
+        yield return new WaitForSeconds(1f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel1");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel1");
+
+        yield return new WaitForSeconds(2f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel2");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel2");
+
+        yield return new WaitForSeconds(2f);
+        PanelManager.Instance.PanelController.SetActivePanel("TutorialPanel3");
+        Time.timeScale = 0f;
+        yield return new WaitUntil(predicate:() => {
+            if(InputManager.Instance.touchcontrols.Touch.TouchPress.IsPressed()) return true;
+            return false;
+        });
+        Time.timeScale = 1f;
+        PanelManager.Instance.PanelController.DeActivePanel("TutorialPanel3");
+
     }
     public override bool CanLose()
     {
