@@ -17,8 +17,6 @@ public class InputManager : MyBehaviour
     public event StartTouchUnderScreen OnStartUnder;
     public delegate void EndTouchUnderScreen(Vector2 position,float time);
     public event EndTouchUnderScreen OnEndUnder;
-
-
     public delegate void StartTouchEvent(Vector2 position,float time);
     public event StartTouchEvent OnStartTouch;
     public delegate void EndTouchEvent(Vector2 position,float time);
@@ -141,11 +139,17 @@ public class InputManager : MyBehaviour
     {
         if (Vector2.Dot(Vector2.left, direction) > directionThreshold)
         {
-            if (OnSwipeLeft != null) OnSwipeLeft();
+            if (OnSwipeLeft != null) 
+            {
+                OnSwipeLeft();
+            }
         }
         else if (Vector2.Dot(Vector2.right, direction) > directionThreshold)
         {
-            if (OnSwipeRight != null) OnSwipeRight();
+            if (OnSwipeRight != null) 
+            {        
+                OnSwipeRight();
+            }
         }
     }
 }

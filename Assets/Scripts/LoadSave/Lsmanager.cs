@@ -14,7 +14,6 @@ public class Lsmanager : MyBehaviour
             Debug.LogWarning(this.gameObject + "Does Existed");
         }
         else  { 
-            DontDestroyOnLoad(this.gameObject);
             instance = this;
         }
     }

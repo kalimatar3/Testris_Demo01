@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Photon.Pun;
-using UnityEditor;
 using UnityEngine;
 public class TetrominoController : MyBehaviour
 {
@@ -43,27 +43,29 @@ public class TetrominoController : MyBehaviour
             ListTettrominoData.Add(new TetrominoData(element));
         }
     }
-    protected void MoveRight(Vector2 position,float time) 
+    protected virtual void MoveRight(Vector2 position,float time) 
     {
         SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
-        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY) {
-            this.Move(Vector3.right);
-        }
-        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY) {
-            this.Move(Vector3.back);
-        }
+        if(BoardManager.Instance.CurBoardMode.Name == "XY") this.Move(Vector3.right);
+        else if(BoardManager.Instance.CurBoardMode.Name == "ZY") this.Move(Vector3.back);
+        else if(BoardManager.Instance.CurBoardMode.Name == "YZ") this.Move(Vector3.forward);
+        else if(BoardManager.Instance.CurBoardMode.Name == "YX") this.Move(Vector3.left);
     }
-    protected void MoveLeft(Vector2 position,float time) 
+    protected virtual void MoveLeft(Vector2 position,float time) 
     {
         SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
-        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY)    this.Move(Vector3.left);
-        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY)   this.Move(Vector3.forward);
+        if(BoardManager.Instance.CurBoardMode.Name == "XY")    this.Move(Vector3.left);
+        else if(BoardManager.Instance.CurBoardMode.Name == "ZY")   this.Move(Vector3.forward);
+        else if(BoardManager.Instance.CurBoardMode.Name == "YZ")   this.Move(Vector3.back);
+        else if(BoardManager.Instance.CurBoardMode.Name == "YX")   this.Move(Vector3.right);
     }
     protected void Rotate(Vector2 position,float time)  
     {
         SoundSpawner.Instance.Spawn("tuck",this.transform.position,Quaternion.identity);
-        if(BoardManager.Instance.boardMode == BoardManager.BoardMode.XY)    this.RotateZ(1);
-        else if(BoardManager.Instance.boardMode == BoardManager.BoardMode.ZY)    this.RotateX(1);
+        if(BoardManager.Instance.CurBoardMode.Name == "XY")    this.RotateZ(1);
+        else if(BoardManager.Instance.CurBoardMode.Name == "ZY")    this.RotateX(-1);
+        else if(BoardManager.Instance.CurBoardMode.Name == "YZ")     this.RotateX(1);  
+        else if(BoardManager.Instance.CurBoardMode.Name == "YX")     this.RotateZ(-1);  
     }
     public void Main() {
         if(this.ThisTetromino == null) return;
@@ -159,9 +161,10 @@ public class TetrominoController : MyBehaviour
     protected void MovingCell() {
         for(int i = 0 ; i < Cells.Length; i++) {
             Cells[i].localPosition = CellsPosition[i] + Tetromino_Pos;
+            Cells[i].localRotation = new Quaternion(0,0,0,0);
         }
     }
-    protected void Move(Vector3 translation) {
+    protected virtual void Move(Vector3 translation) {
         foreach(Transform element in Cells) {
             if(!CanMoveto(element.localPosition + translation)) {
                     if(translation == Vector3.down) {           

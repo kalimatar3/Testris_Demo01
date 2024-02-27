@@ -15,7 +15,7 @@ public class SpawnTetromino : MyBehaviour
         if(!TetrominoManager.TetrominoController.getLanded()) return false;
         return true;
     }
-    public void spawnTetromino() {
+    public virtual void spawnTetromino() {
         if(!CanSapwn()) return;
         TetrominoManager.TetrominoController.Iniatialize(BoardManager.Instance.SpawnPoint);
     }

@@ -15,7 +15,6 @@ public class DataManager : MyBehaviour
         }
         else 
         {
-            DontDestroyOnLoad(this.gameObject);
             instance = this;
         }
     }

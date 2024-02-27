@@ -40,7 +40,7 @@ public class Boardmatrix : MyBehaviour
         }
         return false;
     }
-    public void ClearRow(int row) {
+    public virtual void ClearRow(int row) {
         if(!IsRowFull(row)) return;
         SoundSpawner.Instance.Spawn("holdpower_cut",this.transform.position,Quaternion.identity);        
         Debug.Log("row : " + row + " is cleared");
@@ -51,7 +51,7 @@ public class Boardmatrix : MyBehaviour
                     if(j == row) {
                         if(Matrix[i,row,k] !=null && Matrix[i,row,k].gameObject.activeInHierarchy)
                         {
-                            EffectSpawner.Instance.Spawn("Star",Matrix[i,row,k].position,Quaternion.identity);
+                            EffectSpawner.Instance.Spawn("Star",Matrix[i,row,k].localPosition,Quaternion.identity);
                             BlockSpawner.Instance.DeSpawnToPool(Matrix[i,row,k]);
                         } 
                     }

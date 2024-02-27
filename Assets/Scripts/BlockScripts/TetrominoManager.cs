@@ -4,9 +4,9 @@ public class TetrominoManager : MyBehaviour
 {
     protected static TetrominoManager instance;
     public static TetrominoManager Instance { get => instance;}
-    [SerializeField] protected SpawnTetromino spawnTetromino {get; private set;}
+    [SerializeField] private SpawnTetromino spawnTetromino;
     public SpawnTetromino SpawnTetromino => spawnTetromino;
-    [SerializeField] protected TetrominoController tetrominoController {get; private set;}
+    [SerializeField] private TetrominoController tetrominoController;
     public TetrominoController TetrominoController => tetrominoController;
 
     protected override void LoadComponents() {
@@ -14,11 +14,11 @@ public class TetrominoManager : MyBehaviour
         this.LoadspawnTetromino();
         this.LoadTetrominoController();
     }
-    protected void LoadspawnTetromino() {
+    protected virtual void LoadspawnTetromino() {
         this.spawnTetromino = GetComponentInChildren<SpawnTetromino>();
         if(spawnTetromino == null) Debug.LogWarning(this.transform.name + " cant found spawnTetromino");
     }
-    protected void LoadTetrominoController() {
+    protected virtual void LoadTetrominoController() {
         this.tetrominoController = GetComponentInChildren<TetrominoController>();
         if(tetrominoController == null) Debug.LogWarning(this.transform.name + " cant found TetrominoController");
     }
