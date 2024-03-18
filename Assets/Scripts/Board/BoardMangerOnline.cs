@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-
 public class BoardManagerOnline : BoardManager
 {
     protected new static BoardManagerOnline instance;
     public new static BoardManagerOnline Instance { get => instance;}
+    [SerializeField] public Transform Model;
 
     protected override void Awake()
     {

@@ -26,7 +26,7 @@ public class BoardManager : MyBehaviour
         base.LoadComponents();
         this.LoadBoard();
     }
-    protected void OnEnable() {
+    protected virtual void OnEnable() {
         InputManager.Instance.OnSwipeLeft += XY.ChangetoRight;
         InputManager.Instance.OnSwipeLeft += ZY.ChangetoRight;
         InputManager.Instance.OnSwipeLeft += YZ.ChangetoRight;
